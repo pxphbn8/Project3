@@ -17,7 +17,10 @@ const Reviews = () => {
       }
 
       const data = await response.json();
-      setReviews(data);
+
+      // Sắp xếp các đánh giá theo thời gian giảm dần (mới nhất lên đầu)
+      const sortedReviews = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setReviews(sortedReviews);
     } catch (err) {
       setError(err.message);
     }
@@ -30,6 +33,7 @@ const Reviews = () => {
 
   return (
     <div className="reviews-page">
+      <NavLink to="/Admin" className="close-btn">X </NavLink>
       <h2>Tất Cả Đánh Giá</h2>
 
       {showReviews && (
@@ -64,12 +68,13 @@ const Reviews = () => {
                       </ul>
                     </div>
                   )}
+
+                  {/* Thời gian gửi đánh giá */}
+                  <p><strong>Thời gian gửi:</strong> {new Date(review.createdAt).toLocaleString()}</p>
                 </li>
               ))}
             </ul>
           )}
-
-          <NavLink to="/Admin" className="close-btn">X </NavLink>
         </div>
       )}
     </div>

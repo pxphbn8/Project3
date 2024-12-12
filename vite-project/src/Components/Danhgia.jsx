@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Danhgia.css";
 
 const Danhgia = ({ orderDetails }) => {  // Nhận orderDetails từ props
@@ -12,6 +12,7 @@ const Danhgia = ({ orderDetails }) => {  // Nhận orderDetails từ props
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [submitTime, setSubmitTime] = useState(null); // Thời gian gửi đánh giá
 
   const handleRatingChange = (event) => {
     setRating(parseInt(event.target.value));
@@ -41,6 +42,7 @@ const Danhgia = ({ orderDetails }) => {  // Nhận orderDetails từ props
       phone: buyerInfo.phone,
       address: buyerInfo.address,
       items: orderDetails.items,  // Truyền thông tin sản phẩm
+      createdAt: new Date().toISOString(), // Lưu thời gian gửi đánh giá
     };
 
     try {
@@ -58,6 +60,7 @@ const Danhgia = ({ orderDetails }) => {  // Nhận orderDetails từ props
 
       setSubmitted(true);
       setError("");
+      setSubmitTime(new Date().toLocaleString()); // Lưu thời gian gửi đánh giá sau khi thành công
     } catch (err) {
       setError(err.message);
     }
@@ -87,7 +90,10 @@ const Danhgia = ({ orderDetails }) => {  // Nhận orderDetails từ props
       )}
 
       {submitted ? (
-        <div>Đánh giá của bạn đã được gửi thành công!</div>
+        <div>
+          <p>Đánh giá của bạn đã được gửi thành công!</p>
+          <p><strong>Thời gian gửi:</strong> {submitTime}</p> {/* Hiển thị thời gian gửi */}
+        </div>
       ) : (
         <form onSubmit={handleSubmit}>
           <div>
