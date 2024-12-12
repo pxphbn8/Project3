@@ -135,6 +135,26 @@
         }
       ],
       "status": "Đã Giao Hàng"
+    },
+    {
+      "id": "832805",
+      "customerName": "Vũ Đức Lương",
+      "phone": "0055495852",
+      "address": "n",
+      "total": 1250,
+      "items": [
+        {
+          "id": "6",
+          "title": "IPhone 12 Pro Max",
+          "Quantity": 15,
+          "price": 1250,
+          "desc": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+          "img": "././src/Components/assets/IPhone12promax.jpg",
+          "category": "Iphone",
+          "qty": 1
+        }
+      ],
+      "status": "Đã Giao Hàng"
     }
   ],
   "reviews": [
@@ -199,6 +219,27 @@
         }
       ],
       "createdAt": "2024-12-12T07:40:40.102Z"
+    },
+    {
+      "id": "1c11",
+      "rating": 5,
+      "comment": "ok",
+      "customerName": "Vũ Đức Lương",
+      "phone": "0055495852",
+      "address": "n",
+      "items": [
+        {
+          "id": "6",
+          "title": "IPhone 12 Pro Max",
+          "Quantity": 15,
+          "price": 1250,
+          "desc": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+          "img": "././src/Components/assets/IPhone12promax.jpg",
+          "category": "Iphone",
+          "qty": 1
+        }
+      ],
+      "createdAt": "2024-12-12T08:43:39.894Z"
     }
   ]
 }

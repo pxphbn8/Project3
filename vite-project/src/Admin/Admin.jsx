@@ -25,6 +25,7 @@ const Admin = () => {
         <button onClick={() => navigate('/ManageProducts')}>Manage Products</button>
         <button onClick={() => navigate('/OrderManagement')}>Manage Orders</button>
         <button onClick={() => navigate('/reviews')}>Review</button>
+        <button onClick={() => navigate('/income')}>Income</button>
         <button onClick={handleLogout}>Log out</button>
       </div>
     </div>

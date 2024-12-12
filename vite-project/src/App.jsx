@@ -22,13 +22,14 @@ import ProductEdit from './Admin/ProductEdit';
 import OrderManagement from './Admin/OrderManagement';
 import AcountAdmin from './Admin/AcountAdmin';
 import Reviews from './Admin/Reviews';
-
+import Income from './Admin/Income';
 
 function App() {
   return (
     <>
       <Page />
       <Routes>
+        <Route path="Income" element={<Income />} />
         <Route path="Reviews" element={<Reviews />} />
         <Route path="AcountAdmin" element={<AcountAdmin />} />
         <Route path="OrderManagement" element={<OrderManagement />} />
