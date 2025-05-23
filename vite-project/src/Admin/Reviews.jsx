@@ -16,10 +16,13 @@ const Reviews = () => {
         throw new Error("Có lỗi xảy ra khi lấy danh sách đánh giá.");
       }
 
-      const data = await response.json();
+      const data = await response.json(); 
 
       // Sắp xếp các đánh giá theo thời gian giảm dần (mới nhất lên đầu)
       const sortedReviews = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      
+
       setReviews(sortedReviews);
     } catch (err) {
       setError(err.message);
@@ -46,16 +49,16 @@ const Reviews = () => {
             <ul>
               {reviews.map((review, index) => (
                 <li key={index}>
-                  {/* Đánh giá */}
+                  
                   <p><strong>Đánh giá:</strong> {review.rating} sao</p>
                   <p><strong>Bình luận:</strong> {review.comment}</p>
 
-                  {/* Thông tin người đánh giá */}
+                 
                   <p><strong>Người đánh giá:</strong> {review.customerName}</p>
                   <p><strong>Số điện thoại:</strong> {review.phone}</p>
                   <p><strong>Địa chỉ:</strong> {review.address}</p>
 
-                  {/* Sản phẩm đánh giá */}
+                 
                   {review.items && review.items.length > 0 && (
                     <div>
                       <strong>Sản phẩm đã mua:</strong>
@@ -82,3 +85,8 @@ const Reviews = () => {
 };
 
 export default Reviews;
+
+
+
+
+

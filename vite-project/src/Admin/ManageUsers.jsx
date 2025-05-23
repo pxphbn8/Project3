@@ -6,17 +6,31 @@ const ManageUsers = ({ onClose }) => {
     const [users, setUsers] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
 
-    // Lấy thông tin các tài khoản đã đăng ký từ localStorage
+    // Fetch user data from the API
     useEffect(() => {
-        const savedUsers = JSON.parse(localStorage.getItem("users")) || [];
-        setUsers(savedUsers);
+        // Get the list of users from the API
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/tk");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch users.");
+                }
+                const data = await response.json();
 
-        // Lấy thông tin người dùng hiện tại
-        const loggedInUser = JSON.parse(localStorage.getItem("user"));
-        setCurrentUser(loggedInUser);
-    }, []);
+                // Filter users by the 'User' role
+                const filteredUsers = data.filter(user => user.role === "User");
+                setUsers(filteredUsers);
 
+                // Optionally, get the currently logged-in user
+                const loggedInUser = JSON.parse(localStorage.getItem("user"));
+                setCurrentUser(loggedInUser);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
 
+        fetchUsers();
+    }, []); // Empty dependency array ensures it only runs once after the initial render
 
     return (
         <div className="modal-overlay">
@@ -55,5 +69,3 @@ const ManageUsers = ({ onClose }) => {
 };
 
 export default ManageUsers;
-
-

@@ -21,7 +21,7 @@ const LoginSignup = () => {
     return emailRegex.test(email);
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const newErrors = {};
     if (!validateEmail(email)) {
       newErrors.email = "Email không hợp lệ";
@@ -38,18 +38,37 @@ const LoginSignup = () => {
     } else {
       setErrors({});
   
-      // Lưu tài khoản mới vào danh sách
+      // Lưu tài khoản mới vào localStorage
       const newUser = { username, email, password, role };
       const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
       existingUsers.push(newUser);
       localStorage.setItem("users", JSON.stringify(existingUsers));
   
-      setAction("Login"); // Chuyển sang trang đăng nhập
+      // Gửi tài khoản tới API
+      try {
+        const response = await fetch("http://localhost:3000/tk", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Có lỗi xảy ra khi lưu tài khoản vào hệ thống.");
+        }
+  
+        console.log("Tài khoản đã được lưu vào API");
+  
+        setAction("Login"); // Chuyển sang trang đăng nhập
+      } catch (err) {
+        console.error("Có lỗi khi lưu tài khoản vào API:", err);
+      }
     }
   };
   
-
-  const handleLogin = () => {
+  
+  const handleLogin = async () => {
     const newErrors = {};
     if (!validateEmail(email)) {
       newErrors.email = "Email không hợp lệ";
@@ -57,28 +76,49 @@ const LoginSignup = () => {
     if (password.length < 6) {
       newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
     }
+  
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setErrors({});
-      console.log("Đăng nhập thành công");
-      let user = {
-        "username": username,
-        "email": email,
-        "password": password,
-        "role": role  // Lưu role vào localStorage
-      };
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // Điều hướng dựa trên vai trò người dùng
-      if (role === "Admin") {
-        navigate('/admin');  // Điều hướng tới trang Admin nếu là Admin
-      } else {
-        navigate('/');  // Điều hướng tới trang chính nếu là User
+  
+      // Kiểm tra thông tin đăng nhập với API
+      try {
+        const response = await fetch("http://localhost:3000/tk");
+        if (!response.ok) {
+          throw new Error("Không thể kết nối với API.");
+        }
+  
+        const users = await response.json();
+        console.log("Dữ liệu người dùng từ API:", users); // Log ra để kiểm tra
+  
+        const userFound = users.find(
+          (user) => user.email === email && user.password === password  && user.role === role
+        );
+  
+        if (userFound) {
+          console.log("Đăng nhập thành công");
+  
+          // Lưu thông tin người dùng vào localStorage
+          localStorage.setItem("user", JSON.stringify(userFound));
+  
+          // Điều hướng dựa trên vai trò người dùng
+          if (role === "Admin") {
+            navigate('/admin');  // Điều hướng tới trang Admin nếu là Admin
+          } else {
+            navigate('/');  // Điều hướng tới trang chính nếu là User
+          }
+        } else {
+          console.log("Không tìm thấy người dùng hợp lệ");
+          alert("Tài khoản không tồn tại hoặc mật khẩu không đúng");
+        }
+      } catch (err) {
+        console.error("Có lỗi khi kết nối với API:", err);
       }
     }
   };
-
+  
+  
   const handleResetPassword = () => {
     const newResetErrors = {};
     if (!validateEmail(resetEmail)) {
@@ -86,33 +126,41 @@ const LoginSignup = () => {
     }
     if (Object.keys(newResetErrors).length > 0) {
       setResetErrors(newResetErrors);
-    } else {
-      setResetErrors({});
-      setResetMessage("Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.");
-      setResetEmail(""); 
-      const templateParams = {
-        email: resetEmail, 
-      };
-
-      emailjs
-        .send(
-          "service_wen1dho", 
-          "template_4h9utv7", 
-          templateParams,
-          "iphK7lNLyu9-Lb6ZW"
-        )
-        .then(
-          (response) => {
-            console.log("Email gửi thành công:", response);
-            setResetMessage("Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.");
-            setResetEmail(""); 
-          },
-          (error) => {
-            console.error("Có lỗi khi gửi email:", error);
-          }
-        );
+      return;
     }
+    setResetErrors({});
+  
+    const token = Math.random().toString(36).substring(2); // Tạo token ngẫu nhiên
+    localStorage.setItem(`resetToken-${resetEmail}`, token); // Lưu token gắn với email
+  
+    const reset_link = `http://localhost:3000/ResetPassword?token=${token}`; // Link gửi đi
+  
+    const templateParams = {
+      email: resetEmail, // Phải khớp với {{email}} trong template
+      reset_link,        // Phải khớp với {{reset_link}} trong template
+    };
+  
+    emailjs
+      .send(
+        "service_wen1dho",
+        "template_4h9utv7",
+        templateParams,
+        "iphK7lNLyu9-Lb6ZW"
+      )
+      .then(
+        (response) => {
+          console.log("Email gửi thành công:", response);
+          setResetMessage("Liên kết đặt lại mật khẩu đã được gửi đến email của bạn.");
+          setResetEmail("");
+        },
+        (error) => {
+          console.error("Có lỗi khi gửi email:", error);
+        }
+      );
+  
+
   };
+  
 
   return (
     <div className="container">

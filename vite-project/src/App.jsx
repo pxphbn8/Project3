@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Page from './Components/Page';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
+import ResetPassword from './Components/Resetpassword.jsx';
 import Home from './Components/Home';
 import Products from './Components/Products';
 import Account from './Components/Account';
@@ -44,6 +45,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<Productdetails />} />
         <Route path="/LoginSignup" element={<LoginSignup />} />
+        <Route path="/ResetPassword" element={<ResetPassword />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/Thanhtoan" element={<Thanhtoan />} />
         <Route path="/Trangcapnhat/:orderId" element={<Trangcapnhat />} />

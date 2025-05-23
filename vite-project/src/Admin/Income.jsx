@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+// import './Income.css';
 
 const Income = () => {
   const [orders, setOrders] = useState([]);

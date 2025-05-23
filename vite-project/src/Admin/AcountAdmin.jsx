@@ -43,49 +43,56 @@ const AcountAdmin = () => {
     <div className="admin-container">
       <h1>Admin Profile</h1>
       {user && (
-        <div className="admin-details">
-          <p>
-            <strong>Username:</strong>{' '}
-            {isEditing ? (
-              <input
-                type="text"
-                name="username"
-                value={editData.username}
-                onChange={handleChange}
-              />
-            ) : (
-              user.username
-            )}
-          </p>
-          <p>
-            <strong>Email:</strong>{' '}
-            {isEditing ? (
-              <input
-                type="email"
-                name="email"
-                value={editData.email}
-                onChange={handleChange}
-              />
-            ) : (
-              user.email
-            )}
-          </p>
-          <p>
-            <strong>Role:</strong> {user.role}
-          </p>
-          <div className="actions">
-            {isEditing ? (
-              <>
-                <button onClick={handleSave}>Save</button>
-                <button onClick={handleCancel}>Cancel</button>
-              </>
-            ) : (
-              <button onClick={handleEditClick}>Edit Profile</button>
-            )}
-            <button onClick={() => navigate('/admin')}>Back to Dashboard</button>
-          </div>
-        </div>
+        <table className="admin-details">
+          <tbody>
+            <tr>
+              <td><strong>Username:</strong></td>
+              <td>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="username"
+                    value={editData.username}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  user.username
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Email:</strong></td>
+              <td>
+                {isEditing ? (
+                  <input
+                    type="email"
+                    name="email"
+                    value={editData.email}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  user.email
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Role:</strong></td>
+              <td>{user.role}</td>
+            </tr>
+          </tbody>
+        </table>
       )}
+      <div className="actions">
+        {isEditing ? (
+          <>
+            <button onClick={handleSave}>Save</button>
+            <button onClick={handleCancel}>Cancel</button>
+          </>
+        ) : (
+          <button onClick={handleEditClick}>Edit Profile</button>
+        )}
+        <button onClick={() => navigate('/admin')}>Back to Dashboard</button>
+      </div>
     </div>
   );
 };
